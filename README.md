@@ -9,20 +9,20 @@ Generally, we can classify the detection models into two ways. The main model of
 R-CNN -> SPP Net -> Fast R-CNN -> Faster R-CNN -> Mask R-CNN
 The R-CNN model creatively use CNN network to localize and segment objects. Also, when the number of supervised training samples is scarce, the pre-trained model on the additional data can achieve good results after fine-tuning. In traditional computer vision filed, people like to set some feature manually like SIFT and HOG, and machine learning model prefer study feature from the images. 
 
-![image]https://github.com/HuShiyangchn/Mini-Project-2-for-EC601/blob/master/v2-ec320f9a52d0d5630be4a8fc9ea93c61_hd.jpg
+![image](https://github.com/HuShiyangchn/Mini-Project-2-for-EC601/blob/master/v2-ec320f9a52d0d5630be4a8fc9ea93c61_hd.jpg)
 Network of R-CNN model
 
 R-CNN model separates the detection into two processes. The first one is giving some regions which could include objects and we call this process region proposal. In the original article, it is based on selective search algorithm. The second process is using classification network named AlexNet in these proposal regions.
 
 Before entering CNN, we need to mark the proposed Region Proposal according to Ground Truth. The indicator used here is IoU (Intersection over Union). IoU calculates the ratio of the area of the intersection of the two regions to their sum, and describes the degree of coincidence between the two regions.
 
-![image]https://github.com/HuShiyangchn/Mini-Project-2-for-EC601/blob/master/v2-316f0ffd2d0b0fed3c206bd7616e9edd_hd.jpg
+![image](https://github.com/HuShiyangchn/Mini-Project-2-for-EC601/blob/master/v2-316f0ffd2d0b0fed3c206bd7616e9edd_hd.jpg)
 
 Another point is the Bounding-Box Regression, which is the adjustment of Region Proposal to Ground Truth. The log/exp transformation is added to achieve the loss level at a reasonable level. It can be regarded as a Normalization operation.
 
 After R-CNN, people found that the R-CNN spends lot of time on process each proposal. To accelerate the computing, some researchers propose that after the basic network is run on the whole picture, it is then transmitted to the R-CNN sub-network, sharing most of the calculations.
 
-![image]https://github.com/HuShiyangchn/Mini-Project-2-for-EC601/blob/master/v2-ec320f9a52d0d5630be4a8fc9ea93c61_hd.jpg
+![image](https://github.com/HuShiyangchn/Mini-Project-2-for-EC601/blob/master/v2-ec320f9a52d0d5630be4a8fc9ea93c61_hd.jpg)
 
 The image is obtained by the feature extractor, and the Selective Search algorithm is run on the original image. The RoI (Region of Interset, which can be mixed with Region Proposal) is mapped to the feature map, and RoI Pooling is performed for each RoI. The operation obtains the feature vector of the same length, and the obtained feature vector is arranged for positive and negative samples (maintaining a certain proportion of positive and negative samples), and the batch is transferred to the parallel R-CNN sub-network, and simultaneously classified and returned, and Unify the losses between the two.
 
